@@ -9,17 +9,21 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
-    private ElevatorState elevatorState = ElevatorState.Base;
+    private ElevatorState elevatorState = ElevatorState.None;
 
     private SparkMax motor1;
     private SparkMax motor2;
     private SparkClosedLoopController elevatorPID;
+    private double targetPosition;
+
+    private SlewRateLimiter slewRateLimiter = new SlewRateLimiter(18); //where did we get this number from
   
 
     public ElevatorSubsystem() {
@@ -30,13 +34,15 @@ public class ElevatorSubsystem extends SubsystemBase {
         L2,
         L3,
         L4,
-        Base,
         CoralIntake,
         None,
-        Algae
+        Algae,
+        Drive
     } 
 
+    
 
+    //add a slew rate limiter or whatever
     private void initMotors() {
         motor1 = new SparkMax(Constants.ElevatorConstants.ELEVATOR_MOTOR_1_ID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig ehm1 = ElevatorConstants.ELEVATOR_PID.setSparkMaxPID(motor1, IdleMode.kBrake);
@@ -55,37 +61,58 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorState = state;
         updateElevatorHeight();
     }
-
+    private void setTarget(Double target) {
+        targetPosition = target;
+    }
 
     private void updateElevatorHeight() {
         switch (elevatorState) {
             case CoralIntake:
-                elevatorPID.setReference(Constants.ElevatorConstants.INTAKE, ControlType.kPosition);
+                setTarget(Constants.ElevatorConstants.INTAKE);
                 break;
+        
             case L2:
-                elevatorPID.setReference(Constants.ElevatorConstants.LEVEL_TWO, ControlType.kPosition);    
+                setTarget(Constants.ElevatorConstants.LEVEL_TWO);
                 break;
+        
             case L3:
-                elevatorPID.setReference(Constants.ElevatorConstants.LEVEL_THREE, ControlType.kPosition);
+                setTarget(Constants.ElevatorConstants.LEVEL_THREE);
                 break;
+        
             case L4:
-                elevatorPID.setReference(Constants.ElevatorConstants.LEVEL_FOUR, ControlType.kPosition);
+                setTarget(Constants.ElevatorConstants.LEVEL_FOUR);
                 break;
-            case None:
-                elevatorPID.setReference(0, ControlType.kVoltage);
-                break;
+        
             case Algae:
-                elevatorPID.setReference(Constants.ElevatorConstants.ALGAE, ControlType.kPosition);
+                setTarget(Constants.ElevatorConstants.ALGAE);
                 break;
-            default:
-                elevatorPID.setReference(0, ControlType.kVoltage);
+        
+            case Drive:
+                setTarget(Constants.ElevatorConstants.DRIVE);
+                break;
+        
+            case None:
+                elevatorPID.setReference(0, ControlType.kCurrent);
                 break;
         }
 
     }
 
 
+    
+    @Override
+    public void periodic() {
+        
 
+        double currentPos = motor1.getEncoder().getPosition();
+        double movePos = slewRateLimiter.calculate(targetPosition);
+        if(elevatorState == ElevatorState.None) {
+            elevatorPID.setReference(currentPos, ControlType.kPosition);
+        } else {
+            elevatorPID.setReference(movePos, ControlType.kPosition);
+        }
+        
+    }
 
  
 }
