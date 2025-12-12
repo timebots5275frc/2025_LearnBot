@@ -16,7 +16,7 @@ import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
-    private ElevatorState elevatorState = ElevatorState.None;
+    private ElevatorState elevatorState = ElevatorState.NONE;
 
     private SparkMax motor1;
     private SparkMax motor2;
@@ -34,10 +34,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         L2,
         L3,
         L4,
-        CoralIntake,
-        None,
-        Algae,
-        Drive
+        CORALINTAKE,
+        NONE,
+        ALGAE,
+        DRIVE
     } 
 
     
@@ -54,7 +54,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         ehm2.follow(motor1, true);
         motor2.configure(ehm2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     
-        elevatorState = ElevatorState.None;
+        elevatorState = ElevatorState.NONE;
     } 
 
     public void setElevatorHeight(ElevatorState state) {
@@ -67,7 +67,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private void updateElevatorHeight() {
         switch (elevatorState) {
-            case CoralIntake:
+            case CORALINTAKE:
                 setTarget(Constants.ElevatorConstants.INTAKE);
                 break;
         
@@ -83,15 +83,15 @@ public class ElevatorSubsystem extends SubsystemBase {
                 setTarget(Constants.ElevatorConstants.LEVEL_FOUR);
                 break;
         
-            case Algae:
+            case ALGAE:
                 setTarget(Constants.ElevatorConstants.ALGAE);
                 break;
         
-            case Drive:
+            case DRIVE:
                 setTarget(Constants.ElevatorConstants.DRIVE);
                 break;
         
-            case None:
+            case NONE:
                 elevatorPID.setReference(0, ControlType.kCurrent);
                 break;
         }
@@ -102,11 +102,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     
     @Override
     public void periodic() {
-        
 
+        
         double currentPos = motor1.getEncoder().getPosition();
         double movePos = slewRateLimiter.calculate(targetPosition);
-        if(elevatorState == ElevatorState.None) {
+        if(elevatorState == ElevatorState.NONE) {
             elevatorPID.setReference(currentPos, ControlType.kPosition);
         } else {
             elevatorPID.setReference(movePos, ControlType.kPosition);
