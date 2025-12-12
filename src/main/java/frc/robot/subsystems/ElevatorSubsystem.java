@@ -33,7 +33,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         Base,
         CoralIntake,
         None,
-        Algea
+        Algae
     } 
 
 
@@ -63,21 +63,22 @@ public class ElevatorSubsystem extends SubsystemBase {
                 elevatorPID.setReference(Constants.ElevatorConstants.INTAKE, ControlType.kPosition);
                 break;
             case L2:
-
+                elevatorPID.setReference(Constants.ElevatorConstants.LEVEL_TWO, ControlType.kPosition);    
                 break;
             case L3:
-
+                elevatorPID.setReference(Constants.ElevatorConstants.LEVEL_THREE, ControlType.kPosition);
                 break;
             case L4:
-
+                elevatorPID.setReference(Constants.ElevatorConstants.LEVEL_FOUR, ControlType.kPosition);
                 break;
             case None:
-
+                elevatorPID.setReference(0, ControlType.kVoltage);
                 break;
-            case Algea:
-
+            case Algae:
+                elevatorPID.setReference(Constants.ElevatorConstants.ALGAE, ControlType.kPosition);
                 break;
             default:
+                elevatorPID.setReference(0, ControlType.kVoltage);
                 break;
         }
 
