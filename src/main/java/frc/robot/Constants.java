@@ -150,6 +150,39 @@ public final class Constants {
     public static final double INCH_TO_METER = 0.0254;
   }
 
+  //Intake Constants
+  public final class AlgaeIntakeConstants
+  {
+
+    //encoder ids
+    //public static final int ALGAE_PIVOT_MOTOR_ENCODER_ID = 61;
+    public static final int ALGAE_INTAKE_RUN_MOTOR_ID = 51;
+    public static final int ALGAE_PIVOT_MOTOR_ID = 52;
+
+    //PID's
+    public static final PID ALGAE_INTAKE_RUN_PID = new PID(0.0,0,0,0.000085,0);
+    public static final PID ALGAE_INTAKE_PIVOT_PID = new PID(0.003,0,0,0,0);
+
+    public static final double ALGAE_INTAKE_HOLD_CURRENT = 1.5f;
+
+    //speeds
+     public static final int ALGAE_INTAKE_RUN_SPEED = 3000;
+
+    //Pivot Angle
+    public static final double ALGAE_GROUND_ANGLE = 0;
+    public static final double ALGAE_REEF_ANGLE = 0;
+    public static final double SHOOT_ANGLE = 0;
+    public static final double DRIVE_ANGLE = 0;
+
+     //Heights
+    //  public static final double PROCESSOR_HEIGHT = ;//(ALGAE_INTAKE_PIVOT_ROTATIONS_PER_DEGREE * 10);
+    //  public static final double ALGAE_ON_REEF = ;
+
+     public static final double GROUND = 50;
+    //  public static final double DRIVE_HEIGHT = PROCESSOR_HEIGHT;//(ALGAE_INTAKE_PIVOT_ROTATIONS_PER_DEGREE *80);
+     
+  }
+
   
 }
 
