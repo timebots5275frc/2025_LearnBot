@@ -13,77 +13,12 @@ import frc.robot.CustomTypes.PID;
 
 public class CoralIntakeSubsystem extends SubsystemBase{
     private LaserCANSubsystem laserCANSubsystem;
-    private CoralIntakeStates coralIntakeState = CoralIntakeStates.NONE;
-    
-    private SparkMax intakeMotor1;
-    private SparkMax intakeMotor2;
-
-    private SparkClosedLoopController PID1;
-    private SparkClosedLoopController PID2;
+   
 
     public CoralIntakeSubsystem(LaserCANSubsystem laserCANSubsystem) {
         this.laserCANSubsystem = laserCANSubsystem;
-        initMotors();
+       
     }
-
-    public enum CoralIntakeStates {
-        INTAKE,
-        OUTTAKE_L1,
-        OUTTAKE_L2_TO_L3,
-        OUTTAKE_L4,
-        NONE
-    }
-
-    private void initMotors() {
-        intakeMotor1 = new SparkMax(Constants.CoralIntakeConstants.CORAL_INTAKE_MOTOR_ID1, SparkLowLevel.MotorType.kBrushless);
-        Constants.CoralIntakeConstants.CORAL_INTAKE_PID.setSparkMaxPID(intakeMotor1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        PID1 = intakeMotor1.getClosedLoopController();
-    
-        intakeMotor2 = new SparkMax(Constants.CoralIntakeConstants.CORAL_INTAKE_MOTOR_ID2, SparkLowLevel.MotorType.kBrushless);
-        Constants.CoralIntakeConstants.CORAL_INTAKE_PID.setSparkMaxPID(intakeMotor2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        PID2 = intakeMotor2.getClosedLoopController();
-
-    }
-
-    public void setIntakeState(CoralIntakeStates state) {
-        coralIntakeState = state;
-        updateIntake();
-    }
-
-    private void updateIntake() {
-        switch (coralIntakeState) {
-            case INTAKE:
-                PID1.setReference(Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_NORMAL, ControlType.kVelocity);
-                PID2.setReference(-Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_NORMAL, ControlType.kVelocity);
-                break;
-            case NONE:
-                PID1.setReference(0, ControlType.kCurrent);
-                PID2.setReference(0, ControlType.kCurrent);
-                break;
-            case OUTTAKE_L1:
-                PID1.setReference(Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_L1, ControlType.kVelocity);
-                PID2.setReference(-Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_L1, ControlType.kVelocity);
-                break;
-            case OUTTAKE_L2_TO_L3:
-                PID1.setReference(Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_NORMAL, ControlType.kVelocity);
-                PID2.setReference(-Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_NORMAL, ControlType.kVelocity);
-                break;
-            case OUTTAKE_L4:
-                PID1.setReference(Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_L4, ControlType.kVelocity);
-                PID2.setReference(-Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_L4, ControlType.kVelocity);
-                break;
-        }
-    }
-
-    public boolean coralOutOfWay() {
-        if(laserCANSubsystem.LC2() == false && laserCANSubsystem.LC1() == true) {
-            return true;
-        } else{
-            return false;
-        }
-    }
-
-
 
     @Override
     public void periodic() {
