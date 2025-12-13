@@ -40,7 +40,7 @@ public final class Constants {
     public static final double INTAKE     = (INTAKE_PIVOT_ROTATIONS_PER_DEGREE * (360*.0233));
     public static final double ALGAE =INTAKE_PIVOT_ROTATIONS_PER_DEGREE*360*.2;
 
-
+  }
   public static class ButtonConstants
   {
     //elevator
@@ -201,4 +201,5 @@ public final class Constants {
 
   
 }
+
 
