@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -40,8 +41,8 @@ public class CoralIntakeSubsystem extends SubsystemBase{
     
         intakeMotor2 = new SparkMax(Constants.CoralIntakeConstants.CORAL_INTAKE_MOTOR_ID2, SparkLowLevel.MotorType.kBrushless);
         Constants.CoralIntakeConstants.CORAL_INTAKE_PID.setSparkMaxPID(intakeMotor2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        // IntakeEncoderTwo = IntakeMotorTwo.getEncoder();
         PID2 = intakeMotor2.getClosedLoopController();
+
     }
 
     public void setIntakeState(CoralIntakeStates state) {
@@ -51,18 +52,38 @@ public class CoralIntakeSubsystem extends SubsystemBase{
 
     private void updateIntake() {
         switch (coralIntakeState) {
-            case INTAKE: 
+            case INTAKE:
+                PID1.setReference(Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_NORMAL, ControlType.kVelocity);
+                PID2.setReference(-Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_NORMAL, ControlType.kVelocity);
                 break;
             case NONE:
+                PID1.setReference(0, ControlType.kCurrent);
+                PID2.setReference(0, ControlType.kCurrent);
                 break;
             case OUTTAKE_L1:
+                PID1.setReference(Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_L1, ControlType.kVelocity);
+                PID2.setReference(-Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_L1, ControlType.kVelocity);
                 break;
             case OUTTAKE_L2_TO_L3:
+                PID1.setReference(Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_NORMAL, ControlType.kVelocity);
+                PID2.setReference(-Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_NORMAL, ControlType.kVelocity);
                 break;
             case OUTTAKE_L4:
+                PID1.setReference(Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_L4, ControlType.kVelocity);
+                PID2.setReference(-Constants.CoralIntakeConstants.CORAL_INTAKE_RUN_SPEED_L4, ControlType.kVelocity);
                 break;
         }
     }
+
+    public boolean coralOutOfWay() {
+        if(laserCANSubsystem.LC2() == false && laserCANSubsystem.LC1() == true) {
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+
 
     @Override
     public void periodic() {

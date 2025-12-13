@@ -161,6 +161,7 @@ public final class Constants {
     public static final PID CORAL_INTAKE_PID = new PID(0,0,0,0.000085, 0); 
     public static final int CORAL_INTAKE_RUN_SPEED_NORMAL = 2000;
     public static final int CORAL_INTAKE_RUN_SPEED_L1 = CORAL_INTAKE_RUN_SPEED_NORMAL - 1000;
+    public static final int CORAL_INTAKE_RUN_SPEED_L4 = CORAL_INTAKE_RUN_SPEED_NORMAL - 1000;
   }
 
   public static class LaserCanConstants
