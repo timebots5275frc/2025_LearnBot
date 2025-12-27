@@ -57,8 +57,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorState = ElevatorState.NONE;
     } 
 
-    public void setElevatorHeight(ElevatorState state) {
-        elevatorState = state;
+    public void setElevatorHeight(ElevatorState elevatorState2) {
+        elevatorState = elevatorState2;
         updateElevatorHeight();
     }
     private void setTarget(Double target) {

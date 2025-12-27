@@ -7,12 +7,20 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.commands.SetElevatorState;
+import frc.robot.commands.TeleopJoystickDrive;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.DriveTrain.SwerveDrive;
+import frc.robot.subsystems.Input.Input;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem.ElevatorState;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -25,6 +33,11 @@ public class RobotContainer {
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   
   ElevatorSubsystem elevatorSub;
+  Joystick joy;
+  Input input;
+  TeleopJoystickDrive teleJoyDrive;
+  SwerveDrive swerve;
+  GenericHID bBoard;
 
   /*  Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -34,8 +47,15 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
+    bBoard = new GenericHID(1);
+    joy = new Joystick(0);
+
+    input = new Input(joy);
+    swerve = new SwerveDrive();
+
     elevatorSub = new ElevatorSubsystem();
-    
+
+
     configureBindings();
   }
 
@@ -49,6 +69,25 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
+    teleJoyDrive = new TeleopJoystickDrive(swerve, input, true);
+    swerve.setDefaultCommand(teleJoyDrive);
+    swerve.resetPigeon();
+
+
+    new JoystickButton(joy, 7).onTrue(new InstantCommand(swerve::flipFieldRelative ,swerve));
+    /*tmp */
+    //pigeon
+    new JoystickButton(joy, 8).onTrue(new InstantCommand(swerve::resetPigeon, swerve));
+
+
+    //Elevator
+    new JoystickButton(bBoard, Constants.ButtonConstants.ELEVATOR_L2).onTrue(new SetElevatorState(elevatorSub, ElevatorState.L2));
+    new JoystickButton(bBoard, Constants.ButtonConstants.ELEVATOR_L3).onTrue(new SetElevatorState(elevatorSub, ElevatorState.L3));
+    new JoystickButton(bBoard, Constants.ButtonConstants.ELEVATOR_L4).onTrue(new SetElevatorState(elevatorSub, ElevatorState.L4));
+    //new JoystickButton(bBoard, Constants.ButtonConstants.ELEVATOR_DRIVE).onTrue(new SetElevatorState(elevatorSub, ElevatorState.DRIVE));  set button
+    new JoystickButton(bBoard, Constants.ButtonConstants.ELEVATOR_INTAKE).onTrue(new SetElevatorState(elevatorSub, ElevatorState.CORALINTAKE));
+    
 
     /*  Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
