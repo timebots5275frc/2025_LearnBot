@@ -4,16 +4,10 @@
 
 package frc.robot;
 
-import frc.robot.Constants.CoralIntakeConstants;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.CoralIntakeSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LaserCANSubsystem;
 import frc.robot.commands.SetElevatorState;
 import frc.robot.commands.TeleopJoystickDrive;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.DriveTrain.SwerveDrive;
 import frc.robot.subsystems.Input.AlgaeIntakeSubsystem;
 import frc.robot.subsystems.Input.Input;
