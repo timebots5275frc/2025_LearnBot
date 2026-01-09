@@ -15,6 +15,7 @@ import frc.robot.commands.SetElevatorState;
 import frc.robot.commands.TeleopJoystickDrive;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.DriveTrain.SwerveDrive;
+import frc.robot.subsystems.Input.AlgaeIntakeSubsystem;
 import frc.robot.subsystems.Input.Input;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -45,6 +46,7 @@ public class RobotContainer {
 
   LaserCANSubsystem laserCANSubsystem;
   CoralIntakeSubsystem coralIntakeSubsystem;
+  AlgaeIntakeSubsystem algaeIntakeSubsystem;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   /*  Replace with CommandPS4Controller or CommandJoystick if needed
@@ -64,6 +66,7 @@ public class RobotContainer {
     swerve = new SwerveDrive();
 
     elevatorSub = new ElevatorSubsystem();
+    algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
 
 
     configureBindings();
