@@ -11,10 +11,20 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.CoralIntakeSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LaserCANSubsystem;
+import frc.robot.commands.SetElevatorState;
+import frc.robot.commands.TeleopJoystickDrive;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.DriveTrain.SwerveDrive;
+import frc.robot.subsystems.Input.Input;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem.ElevatorState;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -22,20 +32,40 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  
+  ElevatorSubsystem elevatorSub;
+  Joystick joy;
+  Input input;
+  TeleopJoystickDrive teleJoyDrive;
+  SwerveDrive swerve;
+  GenericHID bBoard;
 
   LaserCANSubsystem laserCANSubsystem;
   CoralIntakeSubsystem coralIntakeSubsystem;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
+  /*  Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  */
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+
   public RobotContainer() {
     laserCANSubsystem = new LaserCANSubsystem();
     coralIntakeSubsystem = new CoralIntakeSubsystem(laserCANSubsystem);
+    bBoard = new GenericHID(1);
+    joy = new Joystick(0);
+
+    input = new Input(joy);
+    swerve = new SwerveDrive();
+
+    elevatorSub = new ElevatorSubsystem();
+
+
     configureBindings();
   }
 
@@ -49,13 +79,34 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+
+    teleJoyDrive = new TeleopJoystickDrive(swerve, input, true);
+    swerve.setDefaultCommand(teleJoyDrive);
+    swerve.resetPigeon();
+
+
+    new JoystickButton(joy, 7).onTrue(new InstantCommand(swerve::flipFieldRelative ,swerve));
+    /*tmp */
+    //pigeon
+    new JoystickButton(joy, 8).onTrue(new InstantCommand(swerve::resetPigeon, swerve));
+
+
+    //Elevator
+    new JoystickButton(bBoard, Constants.ButtonConstants.ELEVATOR_L2).onTrue(new SetElevatorState(elevatorSub, ElevatorState.L2));
+    new JoystickButton(bBoard, Constants.ButtonConstants.ELEVATOR_L3).onTrue(new SetElevatorState(elevatorSub, ElevatorState.L3));
+    new JoystickButton(bBoard, Constants.ButtonConstants.ELEVATOR_L4).onTrue(new SetElevatorState(elevatorSub, ElevatorState.L4));
+    //new JoystickButton(bBoard, Constants.ButtonConstants.ELEVATOR_DRIVE).onTrue(new SetElevatorState(elevatorSub, ElevatorState.DRIVE));  set button
+    new JoystickButton(bBoard, Constants.ButtonConstants.ELEVATOR_INTAKE).onTrue(new SetElevatorState(elevatorSub, ElevatorState.CORALINTAKE));
+    
+
+    /*  Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    */
   }
 
   /**
@@ -64,7 +115,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
+    /*  An example command will be run in autonomous
     return Autos.exampleAuto(m_exampleSubsystem);
+    */
+    return null;
   }
 }

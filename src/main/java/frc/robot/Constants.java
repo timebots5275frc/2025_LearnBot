@@ -18,6 +18,7 @@ import frc.robot.CustomTypes.SwerveModuleLocations;
  */
 public final class Constants {
 
+  public static final double INTAKE_PIVOT_ROTATIONS_PER_DEGREE = (270.0/360.0)/*(270/(double)360)*/; // where did we get these numbers from
   
   
   public static class OperatorConstants {
@@ -25,6 +26,21 @@ public final class Constants {
 
   }
 
+  public final class ElevatorConstants {
+    public static final PID ELEVATOR_PID = new PID(0,0,0,0,0);//change this later
+
+
+    public static final int ELEVATOR_MOTOR_1_ID = 41;
+    public static final int ELEVATOR_MOTOR_2_ID = 42;
+    //where did we get these numbers from
+    public static final double LEVEL_TWO = (INTAKE_PIVOT_ROTATIONS_PER_DEGREE * (360*.07));
+    public static final double LEVEL_THREE = (INTAKE_PIVOT_ROTATIONS_PER_DEGREE * (360*.14));
+    public static final double LEVEL_FOUR = (INTAKE_PIVOT_ROTATIONS_PER_DEGREE * (360*.27));
+    public static final double DRIVE      = 0;
+    public static final double INTAKE     = (INTAKE_PIVOT_ROTATIONS_PER_DEGREE * (360*.0233));
+    public static final double ALGAE =INTAKE_PIVOT_ROTATIONS_PER_DEGREE*360*.2;
+
+  }
   public static class ButtonConstants
   {
     //elevator
@@ -173,7 +189,40 @@ public final class Constants {
     public static final int LASERCAN_DISTANCE_CORAL_OUT1 = 0; //its mm
     public static final int LASERCAN_DISTANCE_CORAL_IN2 = 50; //its mm
     public static final int LASERCAN_DISTANCE_CORAL_OUT2 = 0; //its mm
+  //Intake Constants
+  public final class AlgaeIntakeConstants
+  {
+
+    //encoder ids
+    //public static final int ALGAE_PIVOT_MOTOR_ENCODER_ID = 61;
+    public static final int ALGAE_INTAKE_RUN_MOTOR_ID = 51;
+    public static final int ALGAE_PIVOT_MOTOR_ID = 52;
+
+    //PID's
+    public static final PID ALGAE_INTAKE_RUN_PID = new PID(0.0,0,0,0.000085,0);
+    public static final PID ALGAE_INTAKE_PIVOT_PID = new PID(0.003,0,0,0,0);
+
+    public static final double ALGAE_INTAKE_HOLD_CURRENT = 1.5f;
+
+    //speeds
+     public static final int ALGAE_INTAKE_RUN_SPEED = 3000;
+
+    //Pivot Angle
+    public static final double ALGAE_GROUND_ANGLE = 0;
+    public static final double ALGAE_REEF_ANGLE = 0;
+    public static final double SHOOT_ANGLE = 0;
+    public static final double DRIVE_ANGLE = 0;
+
+     //Heights
+    //  public static final double PROCESSOR_HEIGHT = ;//(ALGAE_INTAKE_PIVOT_ROTATIONS_PER_DEGREE * 10);
+    //  public static final double ALGAE_ON_REEF = ;
+
+     public static final double GROUND = 50;
+    //  public static final double DRIVE_HEIGHT = PROCESSOR_HEIGHT;//(ALGAE_INTAKE_PIVOT_ROTATIONS_PER_DEGREE *80);
+     
   }
 
   
 }
+
+
