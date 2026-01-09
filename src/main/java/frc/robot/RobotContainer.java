@@ -5,7 +5,9 @@
 package frc.robot;
 
 import frc.robot.subsystems.CoralIntakeSubsystem;
+import frc.robot.subsystems.CoralIntakeSubsystem.CoralIntakeStates;
 import frc.robot.subsystems.LaserCANSubsystem;
+import frc.robot.commands.CoralIntake;
 import frc.robot.commands.SetElevatorState;
 import frc.robot.commands.TeleopJoystickDrive;
 import frc.robot.subsystems.DriveTrain.SwerveDrive;
@@ -95,6 +97,12 @@ public class RobotContainer {
     //new JoystickButton(bBoard, Constants.ButtonConstants.ELEVATOR_DRIVE).onTrue(new SetElevatorState(elevatorSub, ElevatorState.DRIVE));  set button
     new JoystickButton(bBoard, Constants.ButtonConstants.ELEVATOR_INTAKE).onTrue(new SetElevatorState(elevatorSub, ElevatorState.CORALINTAKE));
     
+    //Coral
+    new JoystickButton(bBoard, Constants.ButtonConstants.CORAL_INTAKE).onTrue(new CoralIntake(coralIntakeSubsystem, CoralIntakeStates.INTAKE));
+    new JoystickButton(bBoard, Constants.ButtonConstants.CORAL_NONE).onTrue(new CoralIntake(coralIntakeSubsystem, CoralIntakeStates.NONE));
+    new JoystickButton(bBoard, Constants.ButtonConstants.CORAL_OUTTAKE_L1).onTrue(new CoralIntake(coralIntakeSubsystem, CoralIntakeStates.OUTTAKE_L1));
+    new JoystickButton(bBoard, Constants.ButtonConstants.CORAL_OUTTAKE_L2_TO_L3).onTrue(new CoralIntake(coralIntakeSubsystem, CoralIntakeStates.OUTTAKE_L2_L3));
+    new JoystickButton(bBoard, Constants.ButtonConstants.CORAL_OUTTAKE_L4).onTrue(new CoralIntake(coralIntakeSubsystem, CoralIntakeStates.OUTTAKE_L4));
 
     /*  Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)

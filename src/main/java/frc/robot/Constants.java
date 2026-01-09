@@ -19,6 +19,7 @@ import frc.robot.CustomTypes.SwerveModuleLocations;
 public final class Constants {
 
   public static final double INTAKE_PIVOT_ROTATIONS_PER_DEGREE = (270.0/360.0)/*(270/(double)360)*/; // where did we get these numbers from
+ 
   
   
   public static class OperatorConstants {
@@ -189,6 +190,7 @@ public final class Constants {
     public static final int LASERCAN_DISTANCE_CORAL_OUT1 = 0; //its mm
     public static final int LASERCAN_DISTANCE_CORAL_IN2 = 50; //its mm
     public static final int LASERCAN_DISTANCE_CORAL_OUT2 = 0; //its mm
+  }
   //Intake Constants
   public final class AlgaeIntakeConstants
   {
@@ -222,7 +224,7 @@ public final class Constants {
      
   }
 
-  }
 }
+
 
 

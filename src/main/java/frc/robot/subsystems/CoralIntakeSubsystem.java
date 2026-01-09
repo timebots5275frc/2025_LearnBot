@@ -55,6 +55,10 @@ public class CoralIntakeSubsystem extends SubsystemBase{
         updateCoralIntake();
     }
 
+    public boolean getCoralOutOfWay() {
+        return coralOutOfWay;
+    }
+
 
     private void updateCoralIntake() {
         switch (coralIntakeState) {
