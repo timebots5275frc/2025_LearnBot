@@ -80,6 +80,7 @@ public class AlgaeIntakeSubsystem extends SubsystemBase{
 
     public void setPivotState(AlgaePivotStates state) {
         algaePivotState = state;
+        updatePivotMotors();
     }
 
     private void updatePivotMotors() {
