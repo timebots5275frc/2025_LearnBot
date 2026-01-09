@@ -166,6 +166,29 @@ public final class Constants {
     public static final double INCH_TO_METER = 0.0254;
   }
 
+  public static final class CoralIntakeConstants {
+
+    public static final int CORAL_INTAKE_LASERCAN_ID1 = 55;
+    public static final int CORAL_INTAKE_LASERCAN_ID2 = 56;
+
+    public static final int CORAL_INTAKE_MOTOR_ID1 = 61;
+    public static final int CORAL_INTAKE_MOTOR_ID2 = 62;
+
+    public static final PID CORAL_INTAKE_PID = new PID(0,0,0,0.000085, 0); 
+    public static final int CORAL_INTAKE_RUN_SPEED_NORMAL = 2000;
+    public static final int CORAL_INTAKE_RUN_SPEED_L1 = CORAL_INTAKE_RUN_SPEED_NORMAL - 1000;
+    public static final int CORAL_INTAKE_RUN_SPEED_L4 = CORAL_INTAKE_RUN_SPEED_NORMAL - 1000;
+  }
+
+  public static class LaserCanConstants
+  {
+    public static final int LASERCAN_ID1 = 55;
+    public static final int LASERCAN_ID2 = 56;
+
+    public static final int LASERCAN_DISTANCE_CORAL_IN1 = 50; //its mm
+    public static final int LASERCAN_DISTANCE_CORAL_OUT1 = 0; //its mm
+    public static final int LASERCAN_DISTANCE_CORAL_IN2 = 50; //its mm
+    public static final int LASERCAN_DISTANCE_CORAL_OUT2 = 0; //its mm
   //Intake Constants
   public final class AlgaeIntakeConstants
   {
